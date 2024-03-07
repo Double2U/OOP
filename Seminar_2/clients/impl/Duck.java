@@ -1,8 +1,9 @@
-package clients;
+package clients.impl;
 
 import java.time.LocalDate;
 
-
+import clients.Animal;
+import clients.Owner;
 
 public class Duck extends Animal {
 
