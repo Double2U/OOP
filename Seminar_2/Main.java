@@ -15,7 +15,7 @@ public class Main {
         Cat  cat = new Cat ("Вася", 2, LocalDate.of(2024,3,5), new Owner());
         Bird bird = new Bird("Кеша", 1, null, null);
         Dog dog = new Dog  ("Рекс", 4, null, new Owner());
-        Personal nurse = new Nurse("Мария","Иванова" , "Процедурная", 25, 1);
+        Nurse nurse = new Nurse("Мария","Иванова" , "Процедурная", 25, 1);
 
         VeterinaryClinic veterinaryClinic = new VeterinaryClinic();
 
@@ -37,6 +37,7 @@ public class Main {
         veterinaryClinic.getFlyableAnimal();
         veterinaryClinic.getGoableAnimal();
         veterinaryClinic.getSwimablesAnimal();
+        nurse.giveInjection(dog);
 
     }
 }

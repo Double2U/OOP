@@ -11,7 +11,7 @@ public class Nurse extends Personal {
 
 
     public void giveInjection(Animal animal){
-        System.out.println(getClass().getSimpleName() + "got injection" + animal.getType());
+        System.out.println(getClass().getSimpleName() + " got injection " + animal.getType());
     }
 
 

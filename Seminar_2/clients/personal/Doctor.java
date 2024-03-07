@@ -21,11 +21,11 @@ public class Doctor extends Personal{
     }
 
     public void makeDiagnosis(Animal animal){
-        System.out.println(getType() + "made diagnosis" + animal.getType());
+        System.out.println(getType() + " made diagnosis " + animal.getType());
     }
 
     public void prescribeMedicine(Animal animal){
-        System.out.println(getType() + "prescibed medicine");
+        System.out.println(getType() + " prescibed medicine");
     }
 
 }
