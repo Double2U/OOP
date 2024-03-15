@@ -5,14 +5,13 @@ import java.util.Iterator;
 import seminar_4.gb_collections.GbList;
 import seminar_4.gb_collections.lists.util.*;
 
-public class GbLinkedList<E> extends Node<E> implements GbList<E> {
+public class GbLinkedList<E> implements GbList<E> {
 
     private int size;
     private Node<E> firstNode;
     private Node<E> head;
 
     public GbLinkedList() {
-        super(null, null, null);
         this.head = new Node<E>(null, null, firstNode);
         this.firstNode = new Node<E>(null, head, null);
         this.size = 0;
