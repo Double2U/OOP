@@ -21,14 +21,21 @@ public class Main {
         // System.out.println(list);
         GbList<Integer> list  = new GbLinkedList<>();
         System.out.println(list.size());
-        list.add(2);
         list.add(1);
-        list.add(3, 2);
+        list.add(2);
+        list.add(3);
+        list.add(2);
+        Integer value = 3;
+        // list.add(value, 3);
+         list.remove(value);
+         list.add(3);
+
+        // list.remove(1);
         System.out.println(list);
-        list.remove(1);
-        System.out.println(list.size());
-        System.out.println(list.get(1));
-        System.out.println(list);
+        // list.remove(1);
+        // System.out.println(list.size());
+        // System.out.println(list.get(1));
+        // System.out.println(list);
 
 
     }

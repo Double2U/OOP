@@ -3,78 +3,134 @@ package seminar_4.gb_collections.lists;
 import java.util.Iterator;
 
 import seminar_4.gb_collections.GbList;
-import seminar_4.gb_collections.lists.util.*;
+import seminar_4.gb_collections.lists.util.ArrayIterator;
 
-public class GbLinkedList<E> extends Node<E> implements GbList<E> {
+public class GbLinkedList<E> implements GbList<E> {
 
     private int size;
-    private Node<E> firstNode;
     private Node<E> head;
 
     public GbLinkedList() {
-        super(null, null, null);
-        this.head = new Node<E>(null, null, firstNode);
-        this.firstNode = new Node<E>(null, head, null);
+        this.head = null;
         this.size = 0;
+    }
+
+    @SuppressWarnings ("unchecked")
+    public E[] toArray(){
+        int size = size();
+        E[] result = null;
+        try {
+           result = (E[]) new Object[size]; 
+        } catch (ClassCastException e) {
+            System.out.println(e.getMessage());
+        }
+        int i = 0;
+        while (i < size){
+            result[i] = get(i);
+            i++;
+        }
+
+        return result;
     }
 
     @Override
     public Iterator<E> iterator() {
-        return new ArrayIterator<>(null);
+        return new ArrayIterator<>(toArray());
     }
 
     @Override
     public void add(E value) {
-        Node<E> prev = head;
-        prev.setValue(value);
-        head = new Node<E>(null, null, prev);
-        prev.setNext(head);
+        if (head == null) {
+            this.head = new Node<E>(value);
+        } 
+
+         else  {
+            Node<E> curr = head;
+            Node<E> prev = null;
+            while(curr.next != null){
+                prev = curr;
+                curr = prev.next;
+                prev.next = curr;
+                curr.prev = prev;
+            }
+            curr.next = new Node<>(value);
+           
+         }
+
         size++;
     }
 
     @Override
     public void add(E value, int index) {
-        Node<E> currentNode = firstNode.getNext();
-        for (int i = 0; i < index; i++) {
-            currentNode = currentNode.getNext();
+        if (head == null) {
+            head = new Node<E>(value);
         }
-        Node<E> nextCurrentNode = new Node<E>(currentNode.getValue(), currentNode.getNext(), currentNode);
-        currentNode.setValue(value);
-        currentNode.setNext(nextCurrentNode);
+        Node<E> currentNode = head;
+        for (int i = 0; i < index; i++) {
+            currentNode = currentNode.next;
+        }
+        Node<E> nextCurrentNode = new Node<E>();
+        nextCurrentNode.value = currentNode.value;
+        nextCurrentNode.next = currentNode.next;
+        nextCurrentNode.prev = currentNode;
+        currentNode.value = value;
+        currentNode.next = nextCurrentNode;
+
         size++;
     }
 
     @Override
     public E get(int index) {
-        Node<E> currentNode = firstNode.getNext();
-        for (int i = 0; i < index; i++) {
-            currentNode = currentNode.getNext();
+        int i = 0;
+        Node<E> currentNode = head;
+        while (i < index) {
+            currentNode = currentNode.next;
+            i++;
         }
-        return currentNode.getValue();
-
+        return currentNode.value;
     }
 
     @Override
     public void remove(E value) {
-        Node<E> removeNode = firstNode.getNext();
-        for (int i = 0; i < size; i++) {
-            removeNode = removeNode.getNext();
-            if (removeNode.getValue() == value) {
-                removeNode.getNext().setPrev(removeNode.getPrev());
-                removeNode.getPrev().setNext(removeNode.getNext());
+        Node<E> removeNode = head;
+        int i = 0;
+        while (i < size - 1) {
+        // for (int i = 0; i < size - 1; i++) {
+            removeNode = removeNode.next;
+            if (removeNode.value == value) {
+                removeNode.next.prev = removeNode.prev;
+                removeNode.prev.next = removeNode.next;
             }
+            i++; 
         }
         size--;
     }
 
     @Override
     public void remove(int index) {
-        Node<E> removeNode = firstNode.getNext();
+        if (index == 0) head = head.next;
+
+
+        Node<E> removeNode = head;
+
+
         for (int i = 0; i < index; i++) {
-            removeNode = removeNode.getNext();
+            removeNode = removeNode.next;
         }
-        removeNode.getNext().setPrev(removeNode.getPrev());
-        removeNode.getPrev().setNext(removeNode.getNext());
+        
+        Node<E> nextRemoveNode = new Node<>();
+
+        if (index == size - 1){
+            nextRemoveNode.prev = removeNode;
+            nextRemoveNode.next = null;
+            removeNode.next = null;
+            size--;
+            return;
+        }
+
+        removeNode.prev.next = removeNode.next;
+        removeNode.next.prev = removeNode.prev;
+
         size--;
     }
 
@@ -87,10 +143,9 @@ public class GbLinkedList<E> extends Node<E> implements GbList<E> {
     public String toString() {
         StringBuilder builder = new StringBuilder("[");
         int i = 0;
-        Node<E> target = firstNode.getNext();
-        while (i != size) {
-            builder.append(target.getValue()).append(", ");
-            target = target.getNext();
+        E[] values = toArray();
+        while (i < size) {
+            builder.append(values[i]).append(", ");
             i++;
         }
         if (builder.length() == 1)
@@ -98,6 +153,27 @@ public class GbLinkedList<E> extends Node<E> implements GbList<E> {
         builder.deleteCharAt(builder.length() - 1).deleteCharAt(builder.length() - 1);
         builder.append("]");
         return builder.toString();
+    }
+
+    private class Node<T> {
+        T value;
+        Node<T> next;
+        Node<T> prev;
+
+        public Node () {
+            this.value = null;
+            this.next = null;
+            this.prev = null;
+        }
+
+        public Node (T value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value.toString();
+        }
     }
 
 }
